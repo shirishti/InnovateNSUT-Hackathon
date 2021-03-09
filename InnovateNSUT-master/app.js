@@ -77,6 +77,11 @@ app.get("/contact.html", function (req, res) {
   res.sendFile(__dirname + "/contact.html");
 });
 
+app.get("/vaccination.html", function (req, res) {
+  res.sendFile(__dirname + "/vaccination.html");
+});
+
+
 app.get("/appointment.html", function (req, res) {
   res.sendFile(__dirname + "/appointment.html");
 });
