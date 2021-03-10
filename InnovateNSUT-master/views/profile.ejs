@@ -4,6 +4,9 @@
 <% var patientEmail; %>
 <% var patientGender; %>
 <% var patientProfilePic; %>
+<% var patientPreviousAppointment; %>
+<% var patientUpcomingAppointment; %>
+
 
 <html lang="en">
   <head>
@@ -42,7 +45,7 @@
               <a href="appointment" class="nav-link">Appointments</a>
             </li>
             <li class="nav-item">
-              <a href="login" class="nav-link active">Profile</a>
+              <a href="profile" class="nav-link active">Profile</a>
             </li>
             <li class="nav-item">
               <a href="contact" class="nav-link">Contact Us</a>
@@ -106,13 +109,9 @@
     <div class="card text-center">
       <div class="card-header">First</div>
       <div class="card-body">
-        <h5 class="card-title">View previous appointments.</h5>
+        <h5 class="card-title">View previous appointment.</h5>
         <p class="card-text">
-          Lorem ipsum dolor sit amet consectetur adipisicing elit. Doloribus ex
-          maxime est hic expedita vel assumenda at. Fuga, commodi placeat
-          blanditiis nisi ex ut. Eaque possimus officia, illo perspiciatis quae
-          reprehenderit aperiam ducimus ut. Ullam, atque vitae? Est odio nihil
-          labore quo aliquid officia, voluptate rerum, quasi quam vel expedita!
+          <%= patientPreviousAppointment %>
         </p>
         
       </div>
@@ -120,14 +119,9 @@
     <div class="card text-center">
       <div class="card-header">Second</div>
       <div class="card-body">
-        <h5 class="card-title">View Upcoming Appointments.</h5>
+        <h5 class="card-title">View Upcoming Appointment.</h5>
         <p class="card-text">
-          Lorem ipsum dolor sit amet, consectetur adipisicing elit. Non
-          molestias excepturi laborum impedit dolorum quibusdam corporis quia
-          nam voluptate, voluptatibus, laboriosam at blanditiis ad doloribus
-          eligendi libero tempore deleniti deserunt! Explicabo aliquam officia
-          sint error adipisci sequi molestiae nostrum voluptatum voluptate quam
-          excepturi rem, praesentium eaque eos maxime dolorem dolore.
+          <%=  patientUpcomingAppointment %>
         </p>
         
       </div>

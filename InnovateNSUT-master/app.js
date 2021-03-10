@@ -34,6 +34,10 @@ mongoose.connect("mongodb://localhost:27017/patientsDB", {
 });
 
 mongoose.set("useCreateIndex", true);
+const vaccinationSchema = new mongoose.Schema({
+  date: String,
+  medicalIssue: String,
+});
 const patientSchema = new mongoose.Schema({
   name: String,
   email: String,
@@ -41,12 +45,8 @@ const patientSchema = new mongoose.Schema({
   gender: String,
   password: String,
   queries: Array,
-});
-
-const vaccinationSchema = new mongoose.Schema({
-  date: String,
-  medicalIssue: String,
-  patientInfo: patientSchema,
+  appointments: [vaccinationSchema],
+  loggedIn: { type: Boolean, default: false },
 });
 
 const secret = "Thisisourlittlesecret.";
@@ -70,7 +70,7 @@ passport.serializeUser(Patient.serializeUser());
 passport.deserializeUser(Patient.deserializeUser());
 
 app.get("/", function (req, res) {
-  res.render("profile");
+  res.render("index");
 });
 
 app.get("/contact", function (req, res) {
@@ -90,31 +90,17 @@ app.get("/index", function (req, res) {
 });
 
 app.get("/logout", function (req, res) {
-  res.redirect("login");
-});
-
-app.get("/profile", function (req, res) {
   Patient.findOne({ email: patientID }, function (err, foundPatient) {
     if (err) {
       console.log(err);
     } else {
-      console.log("success");
-      if (foundPatient.gender === "Female") {
-        profileSrc = "https://www.bootdey.com/img/Content/avatar/avatar8.png";
-      } else {
-        profileSrc = "https://www.bootdey.com/img/Content/avatar/avatar7.png";
-      }
-
-      res.render("profile", {
-        patientName: foundPatient.name,
-        patientAge: foundPatient.age,
-        patientGender: foundPatient.gender,
-        patientEmail: foundPatient.email,
-        patientProfilePic: profileSrc,
-      });
+      foundPatient.loggedIn = false;
+      res.redirect("login");
     }
   });
 });
+
+
 
 app.get("/login", function (req, res) {
   res.render("login");
@@ -127,12 +113,14 @@ app.post("/register", function (req, res) {
     password: req.body.password,
     age: req.body.age,
     gender: req.body.gender,
+    username: req.body.username,
   });
 
   patient.save(function (err) {
     if (err) {
       console.log(err);
     } else {
+      
       res.redirect("login");
     }
   });
@@ -151,14 +139,15 @@ app.post("/login", function (req, res) {
       if (foundPatient) {
         if (foundPatient.password === password) {
           console.log("success");
+          console.log(foundPatient);
           patientID = email;
-          // Patient.getIndexes({email:null},function(err,nullFound){
-          //   if(err){
-          //            console.log(err);
-          //   }else{
-          //    Patient.dropIndex(nullFound._id);
-          //   }
-          // })
+          Patient.updateOne({email:patientID},{loggedIn:true},function(err){
+            if(err){
+              console.log(err);
+            }else{
+              console.log("success");
+            }
+          })
           res.redirect("profile");
         }
       }
@@ -166,73 +155,127 @@ app.post("/login", function (req, res) {
   });
 });
 
+app.get("/profile", function (req, res) {
+  Patient.findOne({ email: patientID }, function (err, foundPatient) {
+   if (err) {
+     console.log(err);
+   } else {
+        if(foundPatient && foundPatient.loggedIn===true){
+       console.log("success");
+       console.log(foundPatient && foundPatient);
+       if(foundPatient){
+       const l=foundPatient &&  foundPatient.appointments.length;
+       let previousDate="";
+       let upcomingDate="";
+       console.log(foundPatient);
+       if (foundPatient.gender === "Female") {
+         profileSrc = "https://www.bootdey.com/img/Content/avatar/avatar8.png";
+       } else {
+         profileSrc = "https://www.bootdey.com/img/Content/avatar/avatar7.png";
+       }
+
+       if(foundPatient.appointments.length===0){
+         upcomingDate="You have no recent appointments available."
+
+       }else{
+         
+         let date= new Date(foundPatient.appointments[l-1].date);
+         console.log(date);
+         date.setDate(date.getDate()+14);
+
+         upcomingDate=date;
+         console.log(upcomingDate);
+       }
+
+       if(foundPatient.appointments.length==0){
+            previousDate="You have no recent appointments available.";
+       }else{
+         let date=foundPatient.appointments[l-1].date;
+         
+         previousDate=date;
+       }
+       
+       
+        
+       res.render("profile", {
+         patientName: foundPatient.name,
+         patientAge: foundPatient.age,
+         patientGender: foundPatient.gender,
+         patientEmail: foundPatient.email,
+         patientProfilePic: profileSrc,
+         patientPreviousAppointment:previousDate,
+         patientUpcomingAppointment:upcomingDate
+       });
+     
+   }
+
+ }
+ else{
+   res.redirect("login");
+ }
+}
+ 
+ });
+});
+
 app.post("/appointment/:medical", function (req, res) {
   const medicalIssue = req.params.medical;
   const dateOfAppointment = new Date();
 
-  Patient.findOne({ email: patientID }, function (err, foundP) {
-    if (err) {
-      console.log(err);
-    } else {
-      console.log(foundP);
-
-      const appointmentInfo = new VaccinationDetail({
-        medicalIssue: medicalIssue,
-        date: dateOfAppointment,
-        patientInfo: foundP,
-      });
-
-      console.log(appointmentInfo);
-      appointmentInfo.save(function (err) {
-        if (err) {
-          console.log(err);
-        } else {
-          console.log("sucess");
-        }
-      });
-    }
+  const appointmentInfo = new VaccinationDetail({
+    medicalIssue: medicalIssue,
+    date: dateOfAppointment,
   });
+
+  Patient.updateOne(
+    { email: patientID },
+    { $push: { appointments: appointmentInfo } },
+    function (err) {
+      if (err) {
+        console.log(err);
+      } else {
+        console.log("updated");
+      }
+    }
+  );
 });
 
 app.post("/vaccination", function (req, res) {
   const dateOfAppointment = new Date();
   const medicalIssue = "vaccination";
-
-  Patient.findOne({ email: patientID }, function (err, foundP) {
-    if (err) {
-      console.log(err);
-    } else {
-      console.log(foundP);
-
-      const vaccinationAppointment = new VaccinationDetail({
-        medicalIssue: medicalIssue,
-        date: dateOfAppointment,
-        patientInfo: foundP,
-      });
-
-      console.log(vaccinationAppointment);
-      vaccinationAppointment.save(function (err) {
-        if (err) {
-          console.log(err);
-        } else {
-          console.log("sucess");
-        }
-      });
-    }
+  const vaccinationAppointment = new VaccinationDetail({
+    medicalIssue: medicalIssue,
+    date: dateOfAppointment,
   });
+
+  Patient.updateOne(
+    { email: patientID },
+    { $push: { appointments: vaccinationAppointment } },
+    function (err) {
+      if (err) {
+        console.log(err);
+      } else {
+        console.log("updated");
+      }
+    }
+  );
 });
 
 app.post("/appointment", function (req, res) {
   const askedQuestion = req.body.query;
   console.log(req.body);
 
-  Patient.updateOne({}, { $push: { queries: askedQuestion } }, function (err) {
-    if (err) {
-      console.log(err);
-    } else {
-      console.log("success");
+  Patient.updateOne(
+    { email: patientID },
+    { $push: { queries: askedQuestion } },
+    function (err) {
+      if (err) {
+        console.log(err);
+      } else {
+        console.log("success");
+      }
     }
-  });
+  );
 });
 
 app.listen(3000, function () {
