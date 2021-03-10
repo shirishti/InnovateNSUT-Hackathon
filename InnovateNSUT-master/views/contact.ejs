@@ -8,7 +8,9 @@
       src="https://kit.fontawesome.com/9caaa1478d.js"
       crossorigin="anonymous"
     ></script>
-    <link rel="shortcut icon" type="image/x-icon" href="favicon.ico" />
+    <link rel="preconnect" href="https://fonts.gstatic.com">
+<link href="https://fonts.googleapis.com/css2?family=Montserrat&family=Yusei+Magic&display=swap" rel="stylesheet"/>
+    <link rel="shortcut icon" type="image/x-icon" href="https://media.flaticon.com/dist/min/img/favicon.ico" />
     <link rel="stylesheet" href="css/bootstrap.css" />
     <link rel="stylesheet" href="css/style.css" />
     <title>HelTH+</title>
@@ -121,7 +123,7 @@
                   ></textarea>
                 </div>
               </div>
-              <button type="submit" class="btn btn-primary btn-block">
+              <button type="submit" class="btn btn-primary btn-block" data-toggle="modal" data-target="#successModal">
                 Submit
               </button>
             </form>
@@ -133,7 +135,7 @@
     <!-- About Us -->
     <section id="about" class="py-4 bg-dark">
       <div class="container">
-        <h2 class="text-center text-secondary display-3 mb-5">Meet Our Team</h2>
+        <h2 class="text-center display-3 mb-5">Meet Our Team</h2>
         <div class="row">
           <div class="col-sm-4">
             <div class="card text-center mb-5 mb-mob">
@@ -142,19 +144,19 @@
                   src="img/ayush.jpg"
                   class="img-fluid rounded-circle w-50 mb-3"
                 />
-                <h3>Ayush RajPurohit Tenguria</h3>
+                <h3>Ayush Sharma</h3>
                 <h5 class="text-muted">Backend Developer</h5>
                 <p>
                   Myself a full stack developer, a cybersecurity enthusiast and a guitarist, currently a B.Tech fresher at NSUT.
                 </p>
                 <div class="d-flex justify-content-center">
                   <div class="p-4">
-                    <a href="http://facebook.com" target="_blank">
+                    <a href="https://www.github.com/ayushtenguria" target="_blank">
                       <i class="fab fa-github fa-2x"></i>
                     </a>
                   </div>
                   <div class="p-4">
-                    <a href="http://twitter.com" target="_blank">
+                    <a href="https://www.linkedin.com/in/ayush-sharma-800853120" target="_blank">
                       <i class="fab fa-linkedin fa-2x"></i>
                     </a>
                   </div>
@@ -176,6 +178,8 @@
                 />
                 <h3>Shirishti Jain</h3>
                 <h5 class="text-muted">Lead Backend Developer</h5>
+            
+
                 <p>
                   I am a BTech aspirant.I have keen interest in CP, full stack web development 
                   Programming languages:Java and C++
@@ -187,7 +191,7 @@
                     </a>
                   </div>
                   <div class="p-4">
-                    <a href=":https://www.linkedin.com/in/shirishti-jain-2b8a821b7/" target="_blank">
+                    <a href="https://www.linkedin.com/in/shirishti-jain-2b8a821b7/" target="_blank">
                       <i class="fab fa-linkedin fa-2x"></i>
                     </a>
                   </div>
@@ -209,8 +213,9 @@
                 />
                 <h3>Gaurav Bansal</h3>
                 <h5 class="text-muted">Lead Frontend Developer</h5>
+          
                 <p>
-                  Myself a frontend developer, currently B.Tech fresher at NSIT.
+                  Myself a frontend developer, currently B.Tech fresher at NSUT.
                   I am deeply passionate about coding and enterpreneurship.
                 </p>
                 <div class="d-flex justify-content-center">
@@ -252,7 +257,7 @@
                 <h5 class="text-muted">Graphic Designer,Front End Developer</h5>
                 <p>
                   Myself a frontend developer and a graphic designer, currently
-                  B.Tech fresher at DTU.
+                  B.Tech fresher at Delhi Technical University.
                 </p>
                 <div class="d-flex justify-content-center">
                   <div class="p-4">
@@ -265,7 +270,7 @@
                   </div>
                   <div class="p-4">
                     <a
-                      href="www.linkedin.com/in/saksham-gupta-12a5001b8"
+                      href="https://www.linkedin.com/in/saksham-gupta-12a5001b8"
                       target="_blank"
                     >
                       <i class="fab fa-linkedin fa-2x"></i>
@@ -298,17 +303,17 @@
                 </p>
                 <div class="d-flex justify-content-center">
                   <div class="p-4">
-                    <a href="http://facebook.com" target="_blank">
+                    <a href="https://github.com/pushpjain3" target="_blank">
                       <i class="fab fa-github fa-2x"></i>
                     </a>
                   </div>
                   <div class="p-4">
-                    <a href="http://twitter.com" target="_blank">
+                    <a href="https://www.linkedin.com/in/pushp-jain-3780b21bb/" target="_blank">
                       <i class="fab fa-linkedin fa-2x"></i>
                     </a>
                   </div>
                   <div class="p-4">
-                    <a href="http://instagram.com" target="_blank">
+                    <a href="http://instagram.com/pushpjain_/" target="_blank">
                       <i class="fab fa-instagram fa-2x"></i>
                     </a>
                   </div>
@@ -332,6 +337,25 @@
         </div>
       </div>
     </footer>
+
+    <!-- Contact MODAL -->
+    <div class="modal fade" id="successModal">
+      <div class="modal-dialog modal-lg">
+        <div class="modal-content">
+          <div class="modal-header bg-primary text-white">
+            <h5 class="modal-title">Contact Us</h5>
+            <button class="close" data-dismiss="modal">
+              <span>&times;</span>
+            </button>
+          </div>
+          <div class="modal-body">
+            <div class="alert bg-success">
+              <i class="fas fa-check"></i> Your form has been recorded.
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
 
     <script
       src="https://code.jquery.com/jquery-3.5.1.min.js"
