@@ -49,8 +49,6 @@ const vaccinationSchema = new mongoose.Schema({
   patientInfo: patientSchema,
 });
 
-
-
 const secret = "Thisisourlittlesecret.";
 patientSchema.plugin(encrypt, {
   secret: secret,
@@ -59,6 +57,7 @@ patientSchema.plugin(encrypt, {
 
 patientSchema.plugin(passportlocalmongoose); ///
 patientSchema.plugin(findOrCreate);
+
 const Patient = new mongoose.model("Patient", patientSchema);
 const VaccinationDetail = new mongoose.model(
   "VaccinationDetail",
@@ -69,7 +68,6 @@ passport.use(Patient.createStrategy());
 
 passport.serializeUser(Patient.serializeUser());
 passport.deserializeUser(Patient.deserializeUser());
-
 
 app.get("/", function (req, res) {
   res.render("profile");
@@ -91,32 +89,31 @@ app.get("/index", function (req, res) {
   res.render("index");
 });
 
+app.get("/logout", function (req, res) {
+  res.redirect("login");
+});
+
 app.get("/profile", function (req, res) {
-  
-    Patient.findOne({ email: patientID }, function (err, foundPatient) {
-      if (err) {
-        console.log(err);
+  Patient.findOne({ email: patientID }, function (err, foundPatient) {
+    if (err) {
+      console.log(err);
+    } else {
+      console.log("success");
+      if (foundPatient.gender === "Female") {
+        profileSrc = "https://www.bootdey.com/img/Content/avatar/avatar8.png";
       } else {
-        console.log("success");
-        if(foundPatient.gender==="Female"){
-          profileSrc="https://bootdey.com/img/Content/avatar/avatar3.png"
-        }else{
-          profileSrc="https://www.bootdey.com/img/Content/avatar/avatar7.png"
-        }
-        
-        
-        res.render("profile", {
-          patientName: foundPatient.name,
-          patientAge: foundPatient.age,
-          patientGender: foundPatient.gender,
-          patientEmail: foundPatient.email,
-          patientProfilePic:profileSrc
-        });
+        profileSrc = "https://www.bootdey.com/img/Content/avatar/avatar7.png";
       }
-    });
-  
-    
-  
+
+      res.render("profile", {
+        patientName: foundPatient.name,
+        patientAge: foundPatient.age,
+        patientGender: foundPatient.gender,
+        patientEmail: foundPatient.email,
+        patientProfilePic: profileSrc,
+      });
+    }
+  });
 });
 
 app.get("/login", function (req, res) {
@@ -139,7 +136,6 @@ app.post("/register", function (req, res) {
       res.redirect("login");
     }
   });
- 
 });
 
 app.post("/login", function (req, res) {
@@ -156,6 +152,13 @@ app.post("/login", function (req, res) {
         if (foundPatient.password === password) {
           console.log("success");
           patientID = email;
+          // Patient.getIndexes({email:null},function(err,nullFound){
+          //   if(err){
+          //            console.log(err);
+          //   }else{
+          //    Patient.dropIndex(nullFound._id);
+          //   }
+          // })
           res.redirect("profile");
         }
       }
@@ -231,8 +234,6 @@ app.post("/appointment", function (req, res) {
     }
   });
 });
-
-
 
 app.listen(3000, function () {
   console.log("Server is running fine");
