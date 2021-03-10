@@ -36,7 +36,8 @@ mongoose.connect("mongodb://localhost:27017/patientsDB", {
 mongoose.set("useCreateIndex", true);
 const vaccinationSchema = new mongoose.Schema({
   date: String,
-  medicalIssue: String,
+  medicalIssue:{type:String ,
+    default:"your medical issue"},
 });
 const patientSchema = new mongoose.Schema({
   name: String,
@@ -94,9 +95,18 @@ app.get("/logout", function (req, res) {
     if (err) {
       console.log(err);
     } else {
-      foundPatient.loggedIn = false;
+      if(foundPatient){
+      Patient.updateOne({email:patientID},{loggedIn:false},function(err){
+        if(err){
+          console.log(err);
+        }else{
+          console.log("success");
+          console.log(foundPatient.loggedIn);
+        }
+      })
       res.redirect("login");
     }
+  }
   });
 });
 
@@ -165,6 +175,7 @@ app.get("/profile", function (req, res) {
        console.log(foundPatient && foundPatient);
        if(foundPatient){
        const l=foundPatient &&  foundPatient.appointments.length;
+       
        let previousDate="";
        let upcomingDate="";
        console.log(foundPatient);
@@ -194,6 +205,9 @@ app.get("/profile", function (req, res) {
          
          previousDate=date;
        }
+       if(foundPatient.appointments[l-1] === undefined){
+         foundPatient.appointments[l-1]={}
+       }
        
        
         
@@ -204,7 +218,9 @@ app.get("/profile", function (req, res) {
          patientEmail: foundPatient.email,
          patientProfilePic: profileSrc,
          patientPreviousAppointment:previousDate,
-         patientUpcomingAppointment:upcomingDate
+         patientUpcomingAppointment:upcomingDate,
+         patientPreviousMedicalIssue:foundPatient.appointments[l-1].medicalIssue,
+         patientUpcomingMedicalIssue:foundPatient.appointments[l-1].medicalIssue
        });
      
    }
@@ -241,7 +257,7 @@ app.post("/appointment/:medical", function (req, res) {
 });
 
 app.post("/vaccination", function (req, res) {
-  const dateOfAppointment = new Date();
+  const dateOfAppointment=new Date();  
   const medicalIssue = "vaccination";
   const vaccinationAppointment = new VaccinationDetail({
     medicalIssue: medicalIssue,
