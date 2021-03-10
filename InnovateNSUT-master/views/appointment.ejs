@@ -8,15 +8,18 @@
       src="https://kit.fontawesome.com/9caaa1478d.js"
       crossorigin="anonymous"
     ></script>
+    <link rel="preconnect" href="https://fonts.gstatic.com">
+<link href="https://fonts.googleapis.com/css2?family=Montserrat&family=Yusei+Magic&display=swap" rel="stylesheet"//>
     <link rel="shortcut icon" type="image/x-icon" href="https://media.flaticon.com/dist/min/img/favicon.ico" />
     <link rel="stylesheet" href="css/bootstrap.css" />
     <link rel="stylesheet" href="css/style.css" />
+
     <title>HelTH+</title>
   </head>
   <body>
     <nav class="navbar navbar-expand-sm bg-primary navbar-light sticky-top">
       <div class="container">
-        <a href="index.html" class="navbar-brand"><img src="img/logo.png"></a>
+        <a href="index" class="navbar-brand"><img src="img/logo.png"></a>
         <button
           class="navbar-toggler"
           data-toggle="collapse"
@@ -49,7 +52,7 @@
     </nav>
 
     <!-- FAQ -->
-    <section id="faq" class="py-4">
+    <section id="faq" class="py-4 bg-light">
       <div class="container">
         <h2 class="display-2 text-center">FAQs</h2>
         <div class="bottom-line-dark"></div>
@@ -308,39 +311,11 @@
             </button>
           </div>
           <div class="modal-body">
-            <form>
-              <div class="form-group">
-                <label for="name">Name</label>
-                <input
-                  id="name"
-                  name="name"
-                  type="text"
-                  placeholder="Name"
-                  class="form-control"
-                />
-                <div class="invalid-feedback">Invalid Name</div>
+            <div class="modal-body">
+              <div class="alert bg-success">
+                <i class="fas fa-check"></i> Your application has been Submitted.
               </div>
-              <div class="form-group">
-                <label for="email">Email</label>
-                <input
-                  id="email"
-                  name="email"
-                  type="text"
-                  placeholder="Email"
-                  class="form-control"
-                />
-                <div class="invalid-feedback">Invalid Email</div>
-              </div>
-              <div class="form-group">
-                <label for="issue">Medical Issue</label>
-                <textarea
-                  name="issue"
-                  id="issue"
-                  placeholder="Medical Issue"
-                  class="form-control"
-                ></textarea>
-              </div>
-            </form>
+            </div>
           </div>
           <div class="modal-footer">
             <button type="submit" class="btn btn-success" data-dismiss="modal">
@@ -366,7 +341,6 @@
       integrity="sha384-smHYKdLADwkXOn1EmN1qk/HfnUcbVRZyYmZ4qpPea6sjB/pTJ0euyQp0Mk8ck+5T"
       crossorigin="anonymous"
     ></script>
-    <script src="js/form_validation.js"></script>
     <script src="js/main.js"></script>
   </body>
 </html>

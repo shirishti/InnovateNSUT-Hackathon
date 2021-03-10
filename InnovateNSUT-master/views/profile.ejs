@@ -19,6 +19,8 @@
       src="https://kit.fontawesome.com/9caaa1478d.js"
       crossorigin="anonymous"
     ></script>
+    <link rel="preconnect" href="https://fonts.gstatic.com">
+<link href="https://fonts.googleapis.com/css2?family=Montserrat&family=Yusei+Magic&display=swap" rel="stylesheet"/>
     <link rel="shortcut icon" type="image/x-icon" href="https://media.flaticon.com/dist/min/img/favicon.ico" />
     <link rel="stylesheet" href="css/bootstrap.css" />
     <link rel="stylesheet" href="css/style.css" />
@@ -107,28 +109,36 @@
           </div>
         </div>
       </div>
-    </div>
-    <div class="card text-center">
-      <div class="card-header">First</div>
-      <div class="card-body">
-        <h5 class="card-title">View previous appointment.</h5>
-        <p class="card-text">
-          Your previous appointment for <%= patientPreviousMedicalIssue %> was on <%= patientPreviousAppointment %>
-        </p>
-        
+
+      <hr>
+
+      <div class="row">
+        <div class="col-md-6">
+          <div class="card card-body text-center m-4 p-4">
+            <h5 class="card-title">Previous Appointment</h5>
+            <div class="d-flex justify-content-center align-items-center">
+              <i class="fas fa-hand-holding-medical fa-5x h-100 w-50"></i>
+              <div class="issue">
+                <p class="font-weight-bold h-50"><%= patientPreviousMedicalIssue %></p>
+                <p class="lead h-50"><%= patientPreviousAppointment %></p>
+              </div>
+            </div>
+          </div>
+        </div>
+        <div class="col-md-6">
+          <div class="card card-body text-center m-4 p-4">
+            <h5 class="card-title">Upcoming Appointment</h5>
+            <div class="d-flex justify-content-center align-items-center">
+              <i class="fas fa-medkit fa-5x h-100 w-50"></i>
+              <div class="issue">
+                <p class="font-weight-bold h-50"><%= patientUpcomingMedicalIssue %></p>
+                <p class="lead h-50"><%= patientUpcomingAppointment %></p>
+              </div>
+            </div>
+          </div>
+        </div>
       </div>
     </div>
-    <div class="card text-center">
-      <div class="card-header">Second</div>
-      <div class="card-body">
-        <h5 class="card-title">View Upcoming Appointment.</h5>
-        <p class="card-text">
-          Your upcoming appointment for <%=  patientUpcomingMedicalIssue %> is on  <%= patientUpcomingAppointment %>
-        </p>
-        
-      </div>
-    </div>
-    
 
     <!-- Footer -->
     <footer id="main-footer" class="bg-dark text-center pt-3">

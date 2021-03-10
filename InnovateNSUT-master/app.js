@@ -295,5 +295,6 @@ app.post("/appointment", function (req, res) {
 });
 
 app.listen(3000, function () {
+ 
   console.log("Server is running fine");
 });
