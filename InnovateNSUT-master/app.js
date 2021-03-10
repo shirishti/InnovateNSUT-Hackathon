@@ -6,9 +6,10 @@ const session = require("express-session");
 const encrypt = require("mongoose-encryption"); ///
 const passport = require("passport"); ///
 const passportlocalmongoose = require("passport-local-mongoose"); ///
-const GoogleStrategy = require("passport-google-oauth20").Strategy; //1
+
 const findOrCreate = require("mongoose-findorcreate"); //5
 const app = express();
+let patientID = "";
 
 app.use(express.static("public"));
 app.set("view engine", "ejs");
@@ -36,8 +37,19 @@ mongoose.set("useCreateIndex", true);
 const patientSchema = new mongoose.Schema({
   name: String,
   email: String,
+  age: Number,
+  gender: String,
   password: String,
+  queries: Array,
 });
+
+const vaccinationSchema = new mongoose.Schema({
+  date: String,
+  medicalIssue: String,
+  patientInfo: patientSchema,
+});
+
+
 
 const secret = "Thisisourlittlesecret.";
 patientSchema.plugin(encrypt, {
@@ -48,58 +60,67 @@ patientSchema.plugin(encrypt, {
 patientSchema.plugin(passportlocalmongoose); ///
 patientSchema.plugin(findOrCreate);
 const Patient = new mongoose.model("Patient", patientSchema);
+const VaccinationDetail = new mongoose.model(
+  "VaccinationDetail",
+  vaccinationSchema
+);
 
 passport.use(Patient.createStrategy());
 
 passport.serializeUser(Patient.serializeUser());
 passport.deserializeUser(Patient.deserializeUser());
 
-passport.use(
-  new GoogleStrategy(
-    {
-        clientID: "822726882335-912euq5frefokokcfc1s8njkd4li4fg7.apps.googleusercontent.com",
-        clientSecret: "4aSwUj5bMSkOMKjxLPToXUQR",
-      callbackURL: "http://localhost:3000/auth/google/helTH",
-      userProfileURL: "https://www.googleapis.com/oauth2/v3/userinfo",
-    },
-    function (accessToken, refreshToken, profile, cb) {
-      Patient.findOrCreate({ googleId: profile.id }, function (err, user) {
-        return cb(err, user);
-      });
-    }
-  )
-);
+
 app.get("/", function (req, res) {
-  res.sendFile(__dirname + "/index.html");
+  res.render("profile");
 });
 
-app.get("/contact.html", function (req, res) {
-  res.sendFile(__dirname + "/contact.html");
+app.get("/contact", function (req, res) {
+  res.render("contact");
 });
 
-app.get("/vaccination.html", function (req, res) {
-  res.sendFile(__dirname + "/vaccination.html");
+app.get("/vaccination", function (req, res) {
+  res.render("vaccination");
 });
 
-
-app.get("/appointment.html", function (req, res) {
-  res.sendFile(__dirname + "/appointment.html");
+app.get("/appointment", function (req, res) {
+  res.render("appointment");
 });
 
-app.get("/index.html", function (req, res) {
-  res.sendFile(__dirname + "/index.html");
+app.get("/index", function (req, res) {
+  res.render("index");
 });
 
-app.get("/profile.html", function (req, res) {
-  if (req.isAuthenticated()) {
-    res.render("profile");
-  } else {
-    res.redirect("login");
-  }
+app.get("/profile", function (req, res) {
+  
+    Patient.findOne({ email: patientID }, function (err, foundPatient) {
+      if (err) {
+        console.log(err);
+      } else {
+        console.log("success");
+        if(foundPatient.gender==="Female"){
+          profileSrc="https://bootdey.com/img/Content/avatar/avatar3.png"
+        }else{
+          profileSrc="https://www.bootdey.com/img/Content/avatar/avatar7.png"
+        }
+        
+        
+        res.render("profile", {
+          patientName: foundPatient.name,
+          patientAge: foundPatient.age,
+          patientGender: foundPatient.gender,
+          patientEmail: foundPatient.email,
+          patientProfilePic:profileSrc
+        });
+      }
+    });
+  
+    
+  
 });
 
 app.get("/login", function (req, res) {
-  res.sendFile(__dirname + "/login.html");
+  res.render("login");
 });
 
 app.post("/register", function (req, res) {
@@ -107,6 +128,8 @@ app.post("/register", function (req, res) {
     name: req.body.name,
     email: req.body.username,
     password: req.body.password,
+    age: req.body.age,
+    gender: req.body.gender,
   });
 
   patient.save(function (err) {
@@ -116,21 +139,11 @@ app.post("/register", function (req, res) {
       res.redirect("login");
     }
   });
-  // Patient.register({email:req.body.username},req.body.password,function(err,user){
-  //     if(err)
-  //     {
-  //         console.log(err);
-  //         res.redirect("login");
-  //     }
-  //     else{
-  //      passport.authenticate("local")(req,res,function(){
-  //          res.redirect("profile");
-  //      })
-  //     }
-  // })
+ 
 });
 
 app.post("/login", function (req, res) {
+  console.log(req.body);
   const email = req.body.username;
   const password = req.body.password;
 
@@ -142,16 +155,84 @@ app.post("/login", function (req, res) {
       if (foundPatient) {
         if (foundPatient.password === password) {
           console.log("success");
-          res.sendFile(__dirname + "/index.html");
+          patientID = email;
+          res.redirect("profile");
         }
       }
     }
   });
 });
 
-// app.get('/auth/google',function(req,res){                           //7
-//     passport.authenticate('google', { scope: ['profile'] });
-// });
+app.post("/appointment/:medical", function (req, res) {
+  const medicalIssue = req.params.medical;
+  const dateOfAppointment = new Date();
+
+  Patient.findOne({ email: patientID }, function (err, foundP) {
+    if (err) {
+      console.log(err);
+    } else {
+      console.log(foundP);
+
+      const appointmentInfo = new VaccinationDetail({
+        medicalIssue: medicalIssue,
+        date: dateOfAppointment,
+        patientInfo: foundP,
+      });
+
+      console.log(appointmentInfo);
+      appointmentInfo.save(function (err) {
+        if (err) {
+          console.log(err);
+        } else {
+          console.log("sucess");
+        }
+      });
+    }
+  });
+});
+
+app.post("/vaccination", function (req, res) {
+  const dateOfAppointment = new Date();
+  const medicalIssue = "vaccination";
+
+  Patient.findOne({ email: patientID }, function (err, foundP) {
+    if (err) {
+      console.log(err);
+    } else {
+      console.log(foundP);
+
+      const vaccinationAppointment = new VaccinationDetail({
+        medicalIssue: medicalIssue,
+        date: dateOfAppointment,
+        patientInfo: foundP,
+      });
+
+      console.log(vaccinationAppointment);
+      vaccinationAppointment.save(function (err) {
+        if (err) {
+          console.log(err);
+        } else {
+          console.log("sucess");
+        }
+      });
+    }
+  });
+});
+
+app.post("/appointment", function (req, res) {
+  const askedQuestion = req.body.query;
+  console.log(req.body);
+
+  Patient.updateOne({}, { $push: { queries: askedQuestion } }, function (err) {
+    if (err) {
+      console.log(err);
+    } else {
+      console.log("success");
+    }
+  });
+});
+
+
 
 app.listen(3000, function () {
   console.log("Server is running fine");

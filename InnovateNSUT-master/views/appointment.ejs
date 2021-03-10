@@ -16,7 +16,7 @@
   <body>
     <nav class="navbar navbar-expand-sm bg-primary navbar-light sticky-top">
       <div class="container">
-        <a href="index.html" class="navbar-brand">HelTH+</a>
+        <a href="index.html" class="navbar-brand"><img src="img/logo.png"></a>
         <button
           class="navbar-toggler"
           data-toggle="collapse"
@@ -27,21 +27,21 @@
         <div id="navbarCollapse" class="collapse navbar-collapse">
           <ul class="navbar-nav ml-auto">
             <li class="nav-item">
-              <a href="index.html" class="nav-link">Home</a>
+              <a href="index" class="nav-link">Home</a>
             </li>
             <li class="nav-item">
-              <a href="vaccination.html" class="nav-link">Vaccination</a>
+              <a href="vaccination" class="nav-link">Vaccination</a>
             </li>
             <li class="nav-item">
-              <a href="appointment.html" class="nav-link active"
+              <a href="appointment" class="nav-link active"
                 >Appointments</a
               >
             </li>
             <li class="nav-item">
-              <a href="login.html" class="nav-link">Profile</a>
+              <a href="login" class="nav-link">Profile</a>
             </li>
             <li class="nav-item">
-              <a href="contact.html" class="nav-link">Contact Us</a>
+              <a href="contact" class="nav-link">Contact Us</a>
             </li>
           </ul>
         </div>
@@ -152,7 +152,7 @@
       <div class="container">
         <h3 class="display-4 text-center text-white">Still Have Doubts?</h3>
         <div class="bottom-line mb-3"></div>
-        <form class="inline-form mb-3">
+        <form class="inline-form mb-3" method="POST">
           <div class="row">
             <div class="col-sm-9">
               <div class="input-group">
@@ -165,10 +165,11 @@
                   type="text"
                   class="form-control"
                   placeholder="Ask Our Experts"
+                  name="query"
                 />
               </div>
             </div>
-            <div class="col-sm-3">
+            <div cass="col-sm-3">
               <button type="submit" class="btn btn-block btn-primary">
                 Submit
               </button>
@@ -198,13 +199,14 @@
                   <h5 class="text-muted">Cardiologist</h5>
                   <p class="lead">Delhi Hospital</p>
                   <p>ramesh@gmail.com</p>
+                  <form method="POST" action="/appointment/Cardiologist">
                   <button
                     class="btn btn-primary"
-                    data-toggle="modal"
-                    data-target="#myModal"
                   >
+              
                     Book Appointment
                   </button>
+                </form>
                 </div>
               </div>
             </div>
@@ -218,13 +220,15 @@
                   <h5 class="text-muted">Radiologist</h5>
                   <p class="lead">Agarsen Hospital</p>
                   <p>kk23@hotmail.com</p>
+                  <form method="POST" action="/appointment/Radiologist">
                   <button
                     class="btn btn-primary"
-                    data-toggle="modal"
-                    data-target="#myModal"
+                    
                   >
+                
                     Book Appointment
                   </button>
+                </form>
                 </div>
               </div>
             </div>
@@ -240,13 +244,15 @@
                   <h5 class="text-muted">Orthologist</h5>
                   <p class="lead">JKC Hospital</p>
                   <p>harishc@gmail.com</p>
+                  <form method="POST" action="/appointment/Orthologist">
                   <button
                     class="btn btn-primary"
-                    data-toggle="modal"
-                    data-target="#myModal"
+                   
                   >
+                
                     Book Appointment
                   </button>
+                </form>
                 </div>
               </div>
             </div>
@@ -260,13 +266,15 @@
                   <h5 class="text-muted">Dentist</h5>
                   <p class="lead">City Hospital</p>
                   <p>pmalhotra@gmail.com</p>
+                  <form method="POST" action="/appointment/Dentist">
                   <button
                     class="btn btn-primary"
-                    data-toggle="modal"
-                    data-target="#myModal"
+                   
                   >
+                  
                     Book Appointment
                   </button>
+                </form>
                 </div>
               </div>
             </div>

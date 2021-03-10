@@ -1,4 +1,10 @@
 <!DOCTYPE html>
+<% var patientName; %>
+<% var patientAge; %>
+<% var patientEmail; %>
+<% var patientGender; %>
+<% var patientProfilePic; %>
+
 <html lang="en">
   <head>
     <meta charset="UTF-8" />
@@ -16,7 +22,7 @@
   <body>
     <nav class="navbar navbar-expand-sm bg-primary navbar-light sticky-top">
       <div class="container">
-        <a href="index.html" class="navbar-brand">HelTH+</a>
+        <a href="index" class="navbar-brand"><img src="img/logo.png"></a>
         <button
           class="navbar-toggler"
           data-toggle="collapse"
@@ -27,19 +33,19 @@
         <div id="navbarCollapse" class="collapse navbar-collapse">
           <ul class="navbar-nav ml-auto">
             <li class="nav-item">
-              <a href="index.html" class="nav-link">Home</a>
+              <a href="index" class="nav-link">Home</a>
             </li>
             <li class="nav-item">
-              <a href="vaccination.html" class="nav-link">Vaccination</a>
+              <a href="vaccination" class="nav-link">Vaccination</a>
             </li>
             <li class="nav-item">
-              <a href="appointment.html" class="nav-link">Appointments</a>
+              <a href="appointment" class="nav-link">Appointments</a>
             </li>
             <li class="nav-item">
-              <a href="login.html" class="nav-link active">Profile</a>
+              <a href="login" class="nav-link active">Profile</a>
             </li>
             <li class="nav-item">
-              <a href="contact.html" class="nav-link">Contact Us</a>
+              <a href="contact" class="nav-link">Contact Us</a>
             </li>
           </ul>
         </div>
@@ -53,13 +59,13 @@
               <div class="card-body">
                 <div class="d-flex flex-column align-items-center text-center">
                   <img
-                    src="https://bootdey.com/img/Content/avatar/avatar7.png"
+                    src= <%= patientProfilePic %>
                     alt="Admin"
                     class="rounded-circle"
                     width="150"
                   />
                   <div class="mt-3">
-                    <h4>Saksham Gupta</h4>
+                    <h4><%= patientName %></h4>
                   </div>
                 </div>
               </div>
@@ -72,21 +78,21 @@
                   <div class="col-sm-3">
                     <h6 class="mb-0">Age</h6>
                   </div>
-                  <div class="col-sm-9 text-secondary">19</div>
+                  <div class="col-sm-9 text-secondary"><%= patientAge %></div>
                 </div>
                 <hr />
                 <div class="row">
                   <div class="col-sm-3">
                     <h6 class="mb-0">Gender</h6>
                   </div>
-                  <div class="col-sm-9 text-secondary">Male</div>
+                  <div class="col-sm-9 text-secondary"><%= patientGender %></div>
                 </div>
                 <hr />
                 <div class="row">
                   <div class="col-sm-3">
                     <h6 class="mb-0">Email</h6>
                   </div>
-                  <div class="col-sm-9 text-secondary">xyz1111@gmail.com</div>
+                  <div class="col-sm-9 text-secondary"><%= patientEmail %></div>
                 </div>
               </div>
             </div>
